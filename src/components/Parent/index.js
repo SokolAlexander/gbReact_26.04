@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { TextField } from '@material-ui/core';
 
 import { Child } from "../Child";
 
@@ -47,42 +48,33 @@ import { Child } from "../Child";
 // }
 
 export const Parent = () => {
-  console.log('render Parent');
-  const [count, setCount] = useState(0);
-  const [count2, setCount2] = useState(0);
+  const [forms, setForms] = useState({
+    author: "",
+    text: "",
+  });
 
-  // useEffect(() => {
-  //   console.log('useEffect like didMount');
-  // }, []);
+  const handleChange = (e) => {
+    const name = e.target.getAttribute("name");
+    switch (name) {
+      case "author": {
+        setForms({ ...forms, author: e.target.value });
+        break;
+      }
 
-  // useEffect(() => {
-  //   console.log('useEffect - like didMount & didUpdate');
-  // });
+      case "text": {
+        setForms({ ...forms, text: e.target.value });
+        break;
+      }
 
-  // useEffect(() => {
-  //   console.log('useEffect - first render OR count changed');
-  // }, [count]);
-
-  // useEffect(() => {
-  //   console.log("useEffect - first render OR count2 changed");
-  // }, [count2]);
-
-  const updateCount = () => {
-    debugger;
-    setCount(Math.random());
+      default: return
+    }
   };
-
-  // const updateCount2 = () => {
-  //   setCount2(Math.random());
-  // };
 
   return (
     <div>
       <span>This is a parent component</span>
-      {/* <button onClick={updateCount}>Update count</button>
-      <button onClick={updateCount2}>Update count2</button> */}
-      {/* <button onClick={this.toggleChild}>Toggle child</button> */}
-      <Child count={count} updateCount={updateCount} />
+      <input name="author" value={forms.author} onChange={handleChange} />
+      <TextField id="standard-basic" label="Standard" />
     </div>
   );
-}
+};
