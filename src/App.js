@@ -2,40 +2,60 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Form } from "./components/Form";
 import { AUTHORS } from "./utils/constants";
 import { usePrev } from "./utils/hooks";
+import {
+  useHistory,
+  useRouteMatch,
+  useLocation,
+  useParams,
+  Redirect,
+} from "react-router-dom";
 
-const initialMessages = [
-  { author: AUTHORS.HUMAN, text: "Hello" },
-  { author: AUTHORS.BOT, text: "hi" },
-];
+// const initialMessages = [
+//   { author: AUTHORS.HUMAN, text: "Hello" },
+//   { author: AUTHORS.BOT, text: "hi" },
+// ];
+
+const initialMessages = {
+  chat1: [{ author: AUTHORS.HUMAN, text: "Hello" }],
+  chat2: [
+    { author: AUTHORS.BOT, text: "hi" },
+    { author: AUTHORS.BOT, text: "hi again" },
+  ],
+};
 
 const getMessageClassName = (author) => {
   return `message ${author === AUTHORS.BOT ? "bot-message" : "human-message"}`;
 };
 
 const App = (props) => {
-  const { data } = props;
   const [messages, setMessages] = useState(initialMessages);
   const [showForm, setShowForm] = useState(true);
 
-  const filteredData = useMemo(() => data.filter((el) => el > 10), [data]);
+  const params = useParams();
+  const { chatId } = params;
+  console.log(params);
 
-  const handleAddMessage = useCallback((newMessage) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-  }, []);
+  const handleAddMessage = useCallback(
+    (newMessage) => {
+      setMessages((prevMessages) => ({
+        ...prevMessages,
+        [chatId]: [...prevMessages[chatId], newMessage],
+      }));
+    },
+    [chatId]
+  );
 
-  const prevLength = usePrev(messages.length);
   const toggleForm = () => {
     setShowForm(!showForm);
   };
 
   useEffect(() => {
     let timeout;
-    console.log(messages.length, prevLength);
-    if (!messages.length) {
+    if (!messages[chatId]?.length) {
       return;
     }
 
-    const lastMessage = messages[messages.length - 1];
+    const lastMessage = messages[chatId][messages[chatId].length - 1];
     if (lastMessage.author === AUTHORS.HUMAN) {
       timeout = setTimeout(() => {
         handleAddMessage({ author: AUTHORS.BOT, text: "I AM BOT" });
@@ -45,9 +65,13 @@ const App = (props) => {
     return () => clearTimeout(timeout);
   }, [messages]);
 
+  if (!chatId || !messages[chatId]) {
+    return <Redirect to="/profile" />
+  }
+
   return (
     <div>
-      {messages.map((message, i) => (
+      {messages[chatId].map((message, i) => (
         <div key={i} className={getMessageClassName(message.author)}>
           {message.author}: {message.text}
         </div>
@@ -57,6 +81,20 @@ const App = (props) => {
     </div>
   );
 };
+
+const a = 'key';
+
+const obj = {
+  a: 2
+}
+
+// { a: 2 }
+const obj2 = {
+  [a]: 2
+}
+
+// { key: 2 }
+
 
 // class App extends React.Component {
 //   state = {
