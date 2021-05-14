@@ -1,21 +1,25 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { TextField } from '@material-ui/core';
-import { AUTHORS } from '../../utils/constants';
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { TextField } from "@material-ui/core";
+
+import { AUTHORS } from "../../utils/constants";
+import { ThemeContext } from "../../utils/themeContext";
 
 export const Form = ({ onAddMessage }) => {
-  const [text, setText] = useState('');
+  const context = useContext(ThemeContext);
+  console.log("------", context);
+  const [text, setText] = useState("");
   const input = useRef();
 
   const handleChange = (e) => {
     setText(e.target.value);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onAddMessage({author: AUTHORS.HUMAN, text });
-    setText('');
-  }
+    onAddMessage({ author: AUTHORS.HUMAN, text });
+    setText("");
+  };
 
   useEffect(() => {
     console.log(input);
@@ -24,9 +28,13 @@ export const Form = ({ onAddMessage }) => {
 
   useEffect(() => {
     return () => {
-      console.log('unmounting');
-    }
+      console.log("unmounting");
+    };
   }, []);
+
+  const changeTheme = () => {
+    context.setTheme(context.theme === "light" ? "semidark" : "light");
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -39,6 +47,7 @@ export const Form = ({ onAddMessage }) => {
         inputRef={input}
       />
       <input type="submit" />
+      <button onClick={changeTheme}>CHANGE THEME</button>
     </form>
   );
-}
+};

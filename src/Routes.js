@@ -8,11 +8,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import { ChatList } from "./components/ChatList";
-
-const Profile = ({ routerProp }) => {
-  console.log(routerProp);
-  return <div>This is profile page</div>;
-};
+import { ConnectedProfile as Profile } from './components/Profile';
 
 export const Routes = () => {
   return (
