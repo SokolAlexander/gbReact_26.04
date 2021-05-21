@@ -5,5 +5,6 @@ export const Header = () => (
   <>
     <Link to="/">Home</Link>
     <Link to="/profile">Profile</Link>
+    <Link to="/articles">Articles</Link>
   </>
-)
+);

@@ -1,21 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { TextField } from '@material-ui/core';
-import { AUTHORS } from '../../utils/constants';
+import React, { useState, useRef, useEffect } from "react";
+import { TextField, makeStyles } from "@material-ui/core";
+
+import { AUTHORS } from "../../utils/constants";
+
+const useStyles = makeStyles(() => ({
+  textField: {
+    backgroundColor: 'red'
+  }
+}));
+
 
 export const Form = ({ onAddMessage }) => {
-  const [text, setText] = useState('');
+  const classes = useStyles();
+  const [text, setText] = useState("");
   const input = useRef();
 
   const handleChange = (e) => {
     setText(e.target.value);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onAddMessage({author: AUTHORS.HUMAN, text });
-    setText('');
-  }
+    onAddMessage({ author: AUTHORS.HUMAN, text });
+    setText("");
+  };
 
   useEffect(() => {
     console.log(input);
@@ -24,8 +33,8 @@ export const Form = ({ onAddMessage }) => {
 
   useEffect(() => {
     return () => {
-      console.log('unmounting');
-    }
+      console.log("unmounting");
+    };
   }, []);
 
   return (
@@ -37,8 +46,9 @@ export const Form = ({ onAddMessage }) => {
         onChange={handleChange}
         label="Standard"
         inputRef={input}
+        className={classes.textField}
       />
       <input type="submit" />
     </form>
   );
-}
+};

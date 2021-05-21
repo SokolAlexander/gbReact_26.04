@@ -5,6 +5,7 @@ import MessageField from "./components/MessageField";
 import { Profile } from "./components/Profile";
 import { Header } from "./components/Header";
 import { AUTHORS } from "./utils/constants";
+import { Articles } from "./components/Articles";
 
 const initialChats = [
   {
@@ -45,6 +46,10 @@ export const Routes = () => {
 
         <Route path="/profile">
           <Profile />
+        </Route>
+
+        <Route path="/articles">
+          <Articles />
         </Route>
 
         <Route path="/chats/:chatId?">
