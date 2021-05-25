@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
-import MyApp from './App';
-import { Parent } from "./components/Parent";
+// import { Routes } from "./Routes";
+import { store, persistor } from "./store";
+import { App } from "./App";
 
-const exArr = [1, 1, 1, 1, 12, 3, 4, 3, 2, 4, 5, 3, 23, 4, 5, 5];
-
-ReactDOM.render(<MyApp data={exArr} />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <PersistGate persistor={persistor} loading={null}>
+      <App />
+    </PersistGate>
+  </Provider>,
+  document.getElementById("root")
+);
